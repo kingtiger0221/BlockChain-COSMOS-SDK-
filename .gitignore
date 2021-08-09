@@ -29,7 +29,7 @@ coverage
 .grunt
 
 # Bower dependency directory (https://bower.io/)
-bower_components
+bower_componentshttps://github.com/kingtiger0221/BlockChain-COSMOS-SDK-/blob/main/.gitignore
 
 # node-waf configuration
 .lock-wscript
@@ -38,7 +38,7 @@ bower_components
 build/Release
 
 # Dependency directories
-node_modules/
+vue/node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
