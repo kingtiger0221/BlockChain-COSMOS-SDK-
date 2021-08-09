@@ -1,2 +1,2 @@
 # BlockChain-COSMOS-SDK-
-This is the Project for Andrien
+This is the Project for Adrien
