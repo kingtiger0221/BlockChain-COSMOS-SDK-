@@ -1,0 +1,13 @@
+syntax = "proto3";
+package kingtiger0221.interchange.ibcdex;
+
+option go_package = "github.com/kingtiger0221/interchange/x/ibcdex/types";
+
+import "gogoproto/gogo.proto";
+
+message BuyOrderBook {
+  string creator = 1;
+  string index = 2;
+  string amountDenom = 3; 
+  string priceDenom = 4; 
+}
