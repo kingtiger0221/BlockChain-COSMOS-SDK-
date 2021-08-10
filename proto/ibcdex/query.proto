@@ -4,6 +4,7 @@ package kingtiger0221.interchange.ibcdex;
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 // this line is used by starport scaffolding # 1
+import "ibcdex/order.proto";
 import "ibcdex/pop.proto";
 import "ibcdex/denom_trace.proto";
 import "ibcdex/sell_order_book.proto";
@@ -14,6 +15,17 @@ option go_package = "github.com/kingtiger0221/interchange/x/ibcdex/types";
 // Query defines the gRPC querier service.
 service Query {
     // this line is used by starport scaffolding # 2
+
+	// Queries a order by index.
+	rpc Order(QueryGetOrderRequest) returns (QueryGetOrderResponse) {
+		option (google.api.http).get = "/kingtiger0221/interchange/ibcdex/order/{index}";
+	}
+
+	// Queries a list of order items.
+	rpc OrderAll(QueryAllOrderRequest) returns (QueryAllOrderResponse) {
+		option (google.api.http).get = "/kingtiger0221/interchange/ibcdex/order";
+	}
+
 
 	// Queries a pop by id.
 	rpc Pop(QueryGetPopRequest) returns (QueryGetPopResponse) {
@@ -61,6 +73,22 @@ service Query {
 }
 
 // this line is used by starport scaffolding # 3
+message QueryGetOrderRequest {
+	string index = 1;
+}
+
+message QueryGetOrderResponse {
+	Order Order = 1;
+}
+
+message QueryAllOrderRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllOrderResponse {
+	repeated Order Order = 1;
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
 message QueryGetPopRequest {
 	uint64 id = 1;
 }

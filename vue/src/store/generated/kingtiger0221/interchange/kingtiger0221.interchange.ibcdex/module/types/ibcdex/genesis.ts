@@ -1,6 +1,7 @@
 /* eslint-disable */
 import * as Long from 'long'
 import { util, configure, Writer, Reader } from 'protobufjs/minimal'
+import { Order } from '../ibcdex/order'
 import { Pop } from '../ibcdex/pop'
 import { DenomTrace } from '../ibcdex/denom_trace'
 import { SellOrderBook } from '../ibcdex/sell_order_book'
@@ -11,6 +12,8 @@ export const protobufPackage = 'kingtiger0221.interchange.ibcdex'
 /** GenesisState defines the ibcdex module's genesis state. */
 export interface GenesisState {
   /** this line is used by starport scaffolding # genesis/proto/state */
+  orderList: Order[]
+  /** this line is used by starport scaffolding # genesis/proto/stateField */
   popList: Pop[]
   /** this line is used by starport scaffolding # genesis/proto/stateField */
   popCount: number
@@ -28,6 +31,9 @@ const baseGenesisState: object = { popCount: 0, portId: '' }
 
 export const GenesisState = {
   encode(message: GenesisState, writer: Writer = Writer.create()): Writer {
+    for (const v of message.orderList) {
+      Order.encode(v!, writer.uint32(58).fork()).ldelim()
+    }
     for (const v of message.popList) {
       Pop.encode(v!, writer.uint32(42).fork()).ldelim()
     }
@@ -53,6 +59,7 @@ export const GenesisState = {
     const reader = input instanceof Uint8Array ? new Reader(input) : input
     let end = length === undefined ? reader.len : reader.pos + length
     const message = { ...baseGenesisState } as GenesisState
+    message.orderList = []
     message.popList = []
     message.denomTraceList = []
     message.sellOrderBookList = []
@@ -60,6 +67,9 @@ export const GenesisState = {
     while (reader.pos < end) {
       const tag = reader.uint32()
       switch (tag >>> 3) {
+        case 7:
+          message.orderList.push(Order.decode(reader, reader.uint32()))
+          break
         case 5:
           message.popList.push(Pop.decode(reader, reader.uint32()))
           break
@@ -88,10 +98,16 @@ export const GenesisState = {
 
   fromJSON(object: any): GenesisState {
     const message = { ...baseGenesisState } as GenesisState
+    message.orderList = []
     message.popList = []
     message.denomTraceList = []
     message.sellOrderBookList = []
     message.buyOrderBookList = []
+    if (object.orderList !== undefined && object.orderList !== null) {
+      for (const e of object.orderList) {
+        message.orderList.push(Order.fromJSON(e))
+      }
+    }
     if (object.popList !== undefined && object.popList !== null) {
       for (const e of object.popList) {
         message.popList.push(Pop.fromJSON(e))
@@ -127,6 +143,11 @@ export const GenesisState = {
 
   toJSON(message: GenesisState): unknown {
     const obj: any = {}
+    if (message.orderList) {
+      obj.orderList = message.orderList.map((e) => (e ? Order.toJSON(e) : undefined))
+    } else {
+      obj.orderList = []
+    }
     if (message.popList) {
       obj.popList = message.popList.map((e) => (e ? Pop.toJSON(e) : undefined))
     } else {
@@ -154,10 +175,16 @@ export const GenesisState = {
 
   fromPartial(object: DeepPartial<GenesisState>): GenesisState {
     const message = { ...baseGenesisState } as GenesisState
+    message.orderList = []
     message.popList = []
     message.denomTraceList = []
     message.sellOrderBookList = []
     message.buyOrderBookList = []
+    if (object.orderList !== undefined && object.orderList !== null) {
+      for (const e of object.orderList) {
+        message.orderList.push(Order.fromPartial(e))
+      }
+    }
     if (object.popList !== undefined && object.popList !== null) {
       for (const e of object.popList) {
         message.popList.push(Pop.fromPartial(e))

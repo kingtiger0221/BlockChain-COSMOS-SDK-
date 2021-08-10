@@ -1,4 +1,5 @@
 import { Writer, Reader } from 'protobufjs/minimal';
+import { Order } from '../ibcdex/order';
 import { Pop } from '../ibcdex/pop';
 import { DenomTrace } from '../ibcdex/denom_trace';
 import { SellOrderBook } from '../ibcdex/sell_order_book';
@@ -7,6 +8,8 @@ export declare const protobufPackage = "kingtiger0221.interchange.ibcdex";
 /** GenesisState defines the ibcdex module's genesis state. */
 export interface GenesisState {
     /** this line is used by starport scaffolding # genesis/proto/state */
+    orderList: Order[];
+    /** this line is used by starport scaffolding # genesis/proto/stateField */
     popList: Pop[];
     /** this line is used by starport scaffolding # genesis/proto/stateField */
     popCount: number;

@@ -48,3 +48,7 @@ const (
 	PopKey      = "Pop-value-"
 	PopCountKey = "Pop-count-"
 )
+
+const (
+	OrderKey = "Order-value-"
+)

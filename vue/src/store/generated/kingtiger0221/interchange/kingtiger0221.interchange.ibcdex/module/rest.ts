@@ -43,6 +43,13 @@ export type IbcdexMsgSendSellOrderResponse = object;
 
 export type IbcdexMsgUpdatePopResponse = object;
 
+export interface IbcdexOrder {
+  creator?: string;
+  index?: string;
+  amount?: string;
+  price?: string;
+}
+
 export interface IbcdexPop {
   creator?: string;
 
@@ -69,6 +76,21 @@ export interface IbcdexQueryAllBuyOrderBookResponse {
 
 export interface IbcdexQueryAllDenomTraceResponse {
   DenomTrace?: IbcdexDenomTrace[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface IbcdexQueryAllOrderResponse {
+  Order?: IbcdexOrder[];
 
   /**
    * PageResponse is to be embedded in gRPC response messages where the
@@ -118,6 +140,10 @@ export interface IbcdexQueryGetBuyOrderBookResponse {
 
 export interface IbcdexQueryGetDenomTraceResponse {
   DenomTrace?: IbcdexDenomTrace;
+}
+
+export interface IbcdexQueryGetOrderResponse {
+  Order?: IbcdexOrder;
 }
 
 export interface IbcdexQueryGetPopResponse {
@@ -478,6 +504,47 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryDenomTrace = (index: string, params: RequestParams = {}) =>
     this.request<IbcdexQueryGetDenomTraceResponse, RpcStatus>({
       path: `/kingtiger0221/interchange/ibcdex/denomTrace/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryOrderAll
+   * @summary Queries a list of order items.
+   * @request GET:/kingtiger0221/interchange/ibcdex/order
+   */
+  queryOrderAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.countTotal"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<IbcdexQueryAllOrderResponse, RpcStatus>({
+      path: `/kingtiger0221/interchange/ibcdex/order`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryOrder
+   * @summary Queries a order by index.
+   * @request GET:/kingtiger0221/interchange/ibcdex/order/{index}
+   */
+  queryOrder = (index: string, params: RequestParams = {}) =>
+    this.request<IbcdexQueryGetOrderResponse, RpcStatus>({
+      path: `/kingtiger0221/interchange/ibcdex/order/${index}`,
       method: "GET",
       format: "json",
       ...params,

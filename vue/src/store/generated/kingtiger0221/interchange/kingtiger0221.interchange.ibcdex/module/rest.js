@@ -198,6 +198,35 @@ export class Api extends HttpClient {
          * No description
          *
          * @tags Query
+         * @name QueryOrderAll
+         * @summary Queries a list of order items.
+         * @request GET:/kingtiger0221/interchange/ibcdex/order
+         */
+        this.queryOrderAll = (query, params = {}) => this.request({
+            path: `/kingtiger0221/interchange/ibcdex/order`,
+            method: "GET",
+            query: query,
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryOrder
+         * @summary Queries a order by index.
+         * @request GET:/kingtiger0221/interchange/ibcdex/order/{index}
+         */
+        this.queryOrder = (index, params = {}) => this.request({
+            path: `/kingtiger0221/interchange/ibcdex/order/${index}`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
          * @name QueryPopAll
          * @summary Queries a list of pop items.
          * @request GET:/kingtiger0221/interchange/ibcdex/pop

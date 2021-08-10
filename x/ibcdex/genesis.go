@@ -10,6 +10,11 @@ import (
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
 	// this line is used by starport scaffolding # genesis/module/init
+	// Set all the order
+	for _, elem := range genState.OrderList {
+		k.SetOrder(ctx, *elem)
+	}
+
 	// Set all the pop
 	for _, elem := range genState.PopList {
 		k.SetPop(ctx, *elem)
@@ -51,6 +56,13 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis := types.DefaultGenesis()
 
 	// this line is used by starport scaffolding # genesis/module/export
+	// Get all order
+	orderList := k.GetAllOrder(ctx)
+	for _, elem := range orderList {
+		elem := elem
+		genesis.OrderList = append(genesis.OrderList, &elem)
+	}
+
 	// Get all pop
 	popList := k.GetAllPop(ctx)
 	for _, elem := range popList {

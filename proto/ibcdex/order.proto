@@ -5,10 +5,14 @@ option go_package = "github.com/kingtiger0221/interchange/x/ibcdex/types";
 
 import "gogoproto/gogo.proto";
 
-message SellOrderBook {
+message OrderBook{
+  int32 idCount = 1;
+  repeated Order orders = 2;
+}
+
+message Order {
   string creator = 1;
   string index = 2;
-  string amountDenom = 3; 
-  string priceDenom = 4; 
-  OrderBook book = 5;
+  string amount = 3; 
+  string price = 4; 
 }

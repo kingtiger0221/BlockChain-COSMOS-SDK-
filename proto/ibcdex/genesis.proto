@@ -2,6 +2,7 @@ syntax = "proto3";
 package kingtiger0221.interchange.ibcdex;
 
 // this line is used by starport scaffolding # genesis/proto/import
+import "ibcdex/order.proto";
 import "ibcdex/pop.proto";
 import "ibcdex/denom_trace.proto";
 import "ibcdex/sell_order_book.proto";
@@ -12,6 +13,7 @@ option go_package = "github.com/kingtiger0221/interchange/x/ibcdex/types";
 // GenesisState defines the ibcdex module's genesis state.
 message GenesisState {
     // this line is used by starport scaffolding # genesis/proto/state
+		repeated Order orderList = 7; // this line is used by starport scaffolding # genesis/proto/stateField
 		repeated Pop popList = 5; // this line is used by starport scaffolding # genesis/proto/stateField
 		uint64 popCount = 6; // this line is used by starport scaffolding # genesis/proto/stateField
 		repeated DenomTrace denomTraceList = 4; // this line is used by starport scaffolding # genesis/proto/stateField

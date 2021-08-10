@@ -1,8 +1,9 @@
 /* eslint-disable */
 import { Reader, util, configure, Writer } from 'protobufjs/minimal'
 import * as Long from 'long'
-import { Pop } from '../ibcdex/pop'
+import { Order } from '../ibcdex/order'
 import { PageRequest, PageResponse } from '../cosmos/base/query/v1beta1/pagination'
+import { Pop } from '../ibcdex/pop'
 import { DenomTrace } from '../ibcdex/denom_trace'
 import { SellOrderBook } from '../ibcdex/sell_order_book'
 import { BuyOrderBook } from '../ibcdex/buy_order_book'
@@ -10,6 +11,23 @@ import { BuyOrderBook } from '../ibcdex/buy_order_book'
 export const protobufPackage = 'kingtiger0221.interchange.ibcdex'
 
 /** this line is used by starport scaffolding # 3 */
+export interface QueryGetOrderRequest {
+  index: string
+}
+
+export interface QueryGetOrderResponse {
+  Order: Order | undefined
+}
+
+export interface QueryAllOrderRequest {
+  pagination: PageRequest | undefined
+}
+
+export interface QueryAllOrderResponse {
+  Order: Order[]
+  pagination: PageResponse | undefined
+}
+
 export interface QueryGetPopRequest {
   id: number
 }
@@ -76,6 +94,250 @@ export interface QueryAllBuyOrderBookRequest {
 export interface QueryAllBuyOrderBookResponse {
   BuyOrderBook: BuyOrderBook[]
   pagination: PageResponse | undefined
+}
+
+const baseQueryGetOrderRequest: object = { index: '' }
+
+export const QueryGetOrderRequest = {
+  encode(message: QueryGetOrderRequest, writer: Writer = Writer.create()): Writer {
+    if (message.index !== '') {
+      writer.uint32(10).string(message.index)
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetOrderRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseQueryGetOrderRequest } as QueryGetOrderRequest
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.index = reader.string()
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): QueryGetOrderRequest {
+    const message = { ...baseQueryGetOrderRequest } as QueryGetOrderRequest
+    if (object.index !== undefined && object.index !== null) {
+      message.index = String(object.index)
+    } else {
+      message.index = ''
+    }
+    return message
+  },
+
+  toJSON(message: QueryGetOrderRequest): unknown {
+    const obj: any = {}
+    message.index !== undefined && (obj.index = message.index)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<QueryGetOrderRequest>): QueryGetOrderRequest {
+    const message = { ...baseQueryGetOrderRequest } as QueryGetOrderRequest
+    if (object.index !== undefined && object.index !== null) {
+      message.index = object.index
+    } else {
+      message.index = ''
+    }
+    return message
+  }
+}
+
+const baseQueryGetOrderResponse: object = {}
+
+export const QueryGetOrderResponse = {
+  encode(message: QueryGetOrderResponse, writer: Writer = Writer.create()): Writer {
+    if (message.Order !== undefined) {
+      Order.encode(message.Order, writer.uint32(10).fork()).ldelim()
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryGetOrderResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseQueryGetOrderResponse } as QueryGetOrderResponse
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.Order = Order.decode(reader, reader.uint32())
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): QueryGetOrderResponse {
+    const message = { ...baseQueryGetOrderResponse } as QueryGetOrderResponse
+    if (object.Order !== undefined && object.Order !== null) {
+      message.Order = Order.fromJSON(object.Order)
+    } else {
+      message.Order = undefined
+    }
+    return message
+  },
+
+  toJSON(message: QueryGetOrderResponse): unknown {
+    const obj: any = {}
+    message.Order !== undefined && (obj.Order = message.Order ? Order.toJSON(message.Order) : undefined)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<QueryGetOrderResponse>): QueryGetOrderResponse {
+    const message = { ...baseQueryGetOrderResponse } as QueryGetOrderResponse
+    if (object.Order !== undefined && object.Order !== null) {
+      message.Order = Order.fromPartial(object.Order)
+    } else {
+      message.Order = undefined
+    }
+    return message
+  }
+}
+
+const baseQueryAllOrderRequest: object = {}
+
+export const QueryAllOrderRequest = {
+  encode(message: QueryAllOrderRequest, writer: Writer = Writer.create()): Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim()
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllOrderRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseQueryAllOrderRequest } as QueryAllOrderRequest
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32())
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): QueryAllOrderRequest {
+    const message = { ...baseQueryAllOrderRequest } as QueryAllOrderRequest
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination)
+    } else {
+      message.pagination = undefined
+    }
+    return message
+  },
+
+  toJSON(message: QueryAllOrderRequest): unknown {
+    const obj: any = {}
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<QueryAllOrderRequest>): QueryAllOrderRequest {
+    const message = { ...baseQueryAllOrderRequest } as QueryAllOrderRequest
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination)
+    } else {
+      message.pagination = undefined
+    }
+    return message
+  }
+}
+
+const baseQueryAllOrderResponse: object = {}
+
+export const QueryAllOrderResponse = {
+  encode(message: QueryAllOrderResponse, writer: Writer = Writer.create()): Writer {
+    for (const v of message.Order) {
+      Order.encode(v!, writer.uint32(10).fork()).ldelim()
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim()
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): QueryAllOrderResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseQueryAllOrderResponse } as QueryAllOrderResponse
+    message.Order = []
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.Order.push(Order.decode(reader, reader.uint32()))
+          break
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32())
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): QueryAllOrderResponse {
+    const message = { ...baseQueryAllOrderResponse } as QueryAllOrderResponse
+    message.Order = []
+    if (object.Order !== undefined && object.Order !== null) {
+      for (const e of object.Order) {
+        message.Order.push(Order.fromJSON(e))
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination)
+    } else {
+      message.pagination = undefined
+    }
+    return message
+  },
+
+  toJSON(message: QueryAllOrderResponse): unknown {
+    const obj: any = {}
+    if (message.Order) {
+      obj.Order = message.Order.map((e) => (e ? Order.toJSON(e) : undefined))
+    } else {
+      obj.Order = []
+    }
+    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined)
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<QueryAllOrderResponse>): QueryAllOrderResponse {
+    const message = { ...baseQueryAllOrderResponse } as QueryAllOrderResponse
+    message.Order = []
+    if (object.Order !== undefined && object.Order !== null) {
+      for (const e of object.Order) {
+        message.Order.push(Order.fromPartial(e))
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination)
+    } else {
+      message.pagination = undefined
+    }
+    return message
+  }
 }
 
 const baseQueryGetPopRequest: object = { id: 0 }
@@ -1056,6 +1318,10 @@ export const QueryAllBuyOrderBookResponse = {
 
 /** Query defines the gRPC querier service. */
 export interface Query {
+  /** Queries a order by index. */
+  Order(request: QueryGetOrderRequest): Promise<QueryGetOrderResponse>
+  /** Queries a list of order items. */
+  OrderAll(request: QueryAllOrderRequest): Promise<QueryAllOrderResponse>
   /** Queries a pop by id. */
   Pop(request: QueryGetPopRequest): Promise<QueryGetPopResponse>
   /** Queries a list of pop items. */
@@ -1079,6 +1345,18 @@ export class QueryClientImpl implements Query {
   constructor(rpc: Rpc) {
     this.rpc = rpc
   }
+  Order(request: QueryGetOrderRequest): Promise<QueryGetOrderResponse> {
+    const data = QueryGetOrderRequest.encode(request).finish()
+    const promise = this.rpc.request('kingtiger0221.interchange.ibcdex.Query', 'Order', data)
+    return promise.then((data) => QueryGetOrderResponse.decode(new Reader(data)))
+  }
+
+  OrderAll(request: QueryAllOrderRequest): Promise<QueryAllOrderResponse> {
+    const data = QueryAllOrderRequest.encode(request).finish()
+    const promise = this.rpc.request('kingtiger0221.interchange.ibcdex.Query', 'OrderAll', data)
+    return promise.then((data) => QueryAllOrderResponse.decode(new Reader(data)))
+  }
+
   Pop(request: QueryGetPopRequest): Promise<QueryGetPopResponse> {
     const data = QueryGetPopRequest.encode(request).finish()
     const promise = this.rpc.request('kingtiger0221.interchange.ibcdex.Query', 'Pop', data)
