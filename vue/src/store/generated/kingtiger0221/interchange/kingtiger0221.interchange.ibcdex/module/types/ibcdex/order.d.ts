@@ -1,11 +1,22 @@
 import { Writer, Reader } from 'protobufjs/minimal';
 export declare const protobufPackage = "kingtiger0221.interchange.ibcdex";
+export interface OrderBook {
+    idCount: number;
+    orders: Order[];
+}
 export interface Order {
     creator: string;
-    index: string;
-    amount: string;
-    price: string;
+    index: number;
+    amount: number;
+    price: number;
 }
+export declare const OrderBook: {
+    encode(message: OrderBook, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): OrderBook;
+    fromJSON(object: any): OrderBook;
+    toJSON(message: OrderBook): unknown;
+    fromPartial(object: DeepPartial<OrderBook>): OrderBook;
+};
 export declare const Order: {
     encode(message: Order, writer?: Writer): Writer;
     decode(input: Reader | Uint8Array, length?: number): Order;

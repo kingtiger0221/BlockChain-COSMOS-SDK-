@@ -67,16 +67,7 @@ func (k Keeper) TransmitCreatePairPacket(
 }
 
 // OnRecvCreatePairPacket processes packet reception
-func (k Keeper) OnRecvCreatePairPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CreatePairPacketData) (packetAck types.CreatePairPacketAck, err error) {
-	// validate packet data upon receiving
-	if err := data.ValidateBasic(); err != nil {
-		return packetAck, err
-	}
 
-	// TODO: packet reception logic
-
-	return packetAck, nil
-}
 
 // OnAcknowledgementCreatePairPacket responds to the the success or failure of a packet
 // acknowledgement written on the receiving chain.
@@ -112,4 +103,19 @@ func (k Keeper) OnTimeoutCreatePairPacket(ctx sdk.Context, packet channeltypes.P
 	// TODO: packet timeout logic
 
 	return nil
+}
+func (k Keeper) OnRecvCreatePairPacket(ctx sdk.Context, packet channeltypes.Packet, data types.CreatePairPacketData)(packetAck types.CreatePairPacketAck, err error) {
+	if err := data.validateBasic();err!= nil{
+		return packetAck, err
+	}
+	pairIndex := types.OrderBookIndex(packet.SourcePort, packet.SourceChannel, data.TagetDenom)
+	_, found := k.GetBuyOrderBook(ctx, pairIndex)
+	if found {
+		return packetAck, errors.New("the pair already exist")
+	}
+
+	book := types.NewBuyOrderBook(data.SourceDenom, data.TargetDenom)
+	book.index = pariIndex
+	k.SetBuyOrderBook(ctx, book)
+	return packetAck, nil
 }

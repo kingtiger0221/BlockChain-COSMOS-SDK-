@@ -19660,7 +19660,8 @@ paths:
                     creator:
                       type: string
                     index:
-                      type: string
+                      type: integer
+                      format: int32
                     port:
                       type: string
                     channel:
@@ -19779,7 +19780,8 @@ paths:
                   creator:
                     type: string
                   index:
-                    type: string
+                    type: integer
+                    format: int32
                   port:
                     type: string
                   channel:
@@ -19831,11 +19833,14 @@ paths:
                     creator:
                       type: string
                     index:
-                      type: string
+                      type: integer
+                      format: int32
                     amount:
-                      type: string
+                      type: integer
+                      format: int32
                     price:
-                      type: string
+                      type: integer
+                      format: int32
               pagination:
                 type: object
                 properties:
@@ -19948,11 +19953,14 @@ paths:
                   creator:
                     type: string
                   index:
-                    type: string
+                    type: integer
+                    format: int32
                   amount:
-                    type: string
+                    type: integer
+                    format: int32
                   price:
-                    type: string
+                    type: integer
+                    format: int32
         default:
           description: An unexpected error response.
           schema:
@@ -20168,11 +20176,34 @@ paths:
                     creator:
                       type: string
                     index:
-                      type: string
+                      type: integer
+                      format: int32
                     amountDenom:
                       type: string
                     priceDenom:
                       type: string
+                    book:
+                      type: object
+                      properties:
+                        idCount:
+                          type: integer
+                          format: int32
+                        orders:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              creator:
+                                type: string
+                              index:
+                                type: integer
+                                format: int32
+                              amount:
+                                type: integer
+                                format: int32
+                              price:
+                                type: integer
+                                format: int32
               pagination:
                 type: object
                 properties:
@@ -20285,11 +20316,34 @@ paths:
                   creator:
                     type: string
                   index:
-                    type: string
+                    type: integer
+                    format: int32
                   amountDenom:
                     type: string
                   priceDenom:
                     type: string
+                  book:
+                    type: object
+                    properties:
+                      idCount:
+                        type: integer
+                        format: int32
+                      orders:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            creator:
+                              type: string
+                            index:
+                              type: integer
+                              format: int32
+                            amount:
+                              type: integer
+                              format: int32
+                            price:
+                              type: integer
+                              format: int32
         default:
           description: An unexpected error response.
           schema:
@@ -30620,7 +30674,8 @@ definitions:
       creator:
         type: string
       index:
-        type: string
+        type: integer
+        format: int32
       port:
         type: string
       channel:
@@ -30653,11 +30708,36 @@ definitions:
       creator:
         type: string
       index:
-        type: string
+        type: integer
+        format: int32
       amount:
-        type: string
+        type: integer
+        format: int32
       price:
-        type: string
+        type: integer
+        format: int32
+  kingtiger0221.interchange.ibcdex.OrderBook:
+    type: object
+    properties:
+      idCount:
+        type: integer
+        format: int32
+      orders:
+        type: array
+        items:
+          type: object
+          properties:
+            creator:
+              type: string
+            index:
+              type: integer
+              format: int32
+            amount:
+              type: integer
+              format: int32
+            price:
+              type: integer
+              format: int32
   kingtiger0221.interchange.ibcdex.Pop:
     type: object
     properties:
@@ -30722,7 +30802,8 @@ definitions:
             creator:
               type: string
             index:
-              type: string
+              type: integer
+              format: int32
             port:
               type: string
             channel:
@@ -30765,11 +30846,14 @@ definitions:
             creator:
               type: string
             index:
-              type: string
+              type: integer
+              format: int32
             amount:
-              type: string
+              type: integer
+              format: int32
             price:
-              type: string
+              type: integer
+              format: int32
       pagination:
         type: object
         properties:
@@ -30848,11 +30932,34 @@ definitions:
             creator:
               type: string
             index:
-              type: string
+              type: integer
+              format: int32
             amountDenom:
               type: string
             priceDenom:
               type: string
+            book:
+              type: object
+              properties:
+                idCount:
+                  type: integer
+                  format: int32
+                orders:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      creator:
+                        type: string
+                      index:
+                        type: integer
+                        format: int32
+                      amount:
+                        type: integer
+                        format: int32
+                      price:
+                        type: integer
+                        format: int32
       pagination:
         type: object
         properties:
@@ -30901,7 +31008,8 @@ definitions:
           creator:
             type: string
           index:
-            type: string
+            type: integer
+            format: int32
           port:
             type: string
           channel:
@@ -30917,11 +31025,14 @@ definitions:
           creator:
             type: string
           index:
-            type: string
+            type: integer
+            format: int32
           amount:
-            type: string
+            type: integer
+            format: int32
           price:
-            type: string
+            type: integer
+            format: int32
   kingtiger0221.interchange.ibcdex.QueryGetPopResponse:
     type: object
     properties:
@@ -30946,19 +31057,65 @@ definitions:
           creator:
             type: string
           index:
-            type: string
+            type: integer
+            format: int32
           amountDenom:
             type: string
           priceDenom:
             type: string
+          book:
+            type: object
+            properties:
+              idCount:
+                type: integer
+                format: int32
+              orders:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    creator:
+                      type: string
+                    index:
+                      type: integer
+                      format: int32
+                    amount:
+                      type: integer
+                      format: int32
+                    price:
+                      type: integer
+                      format: int32
   kingtiger0221.interchange.ibcdex.SellOrderBook:
     type: object
     properties:
       creator:
         type: string
       index:
-        type: string
+        type: integer
+        format: int32
       amountDenom:
         type: string
       priceDenom:
         type: string
+      book:
+        type: object
+        properties:
+          idCount:
+            type: integer
+            format: int32
+          orders:
+            type: array
+            items:
+              type: object
+              properties:
+                creator:
+                  type: string
+                index:
+                  type: integer
+                  format: int32
+                amount:
+                  type: integer
+                  format: int32
+                price:
+                  type: integer
+                  format: int32

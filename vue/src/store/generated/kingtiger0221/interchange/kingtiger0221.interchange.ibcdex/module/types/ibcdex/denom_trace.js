@@ -1,14 +1,14 @@
 /* eslint-disable */
 import { Writer, Reader } from 'protobufjs/minimal';
 export const protobufPackage = 'kingtiger0221.interchange.ibcdex';
-const baseDenomTrace = { creator: '', index: '', port: '', channel: '', origin: '' };
+const baseDenomTrace = { creator: '', index: 0, port: '', channel: '', origin: '' };
 export const DenomTrace = {
     encode(message, writer = Writer.create()) {
         if (message.creator !== '') {
             writer.uint32(10).string(message.creator);
         }
-        if (message.index !== '') {
-            writer.uint32(18).string(message.index);
+        if (message.index !== 0) {
+            writer.uint32(16).int32(message.index);
         }
         if (message.port !== '') {
             writer.uint32(26).string(message.port);
@@ -32,7 +32,7 @@ export const DenomTrace = {
                     message.creator = reader.string();
                     break;
                 case 2:
-                    message.index = reader.string();
+                    message.index = reader.int32();
                     break;
                 case 3:
                     message.port = reader.string();
@@ -59,10 +59,10 @@ export const DenomTrace = {
             message.creator = '';
         }
         if (object.index !== undefined && object.index !== null) {
-            message.index = String(object.index);
+            message.index = Number(object.index);
         }
         else {
-            message.index = '';
+            message.index = 0;
         }
         if (object.port !== undefined && object.port !== null) {
             message.port = String(object.port);
@@ -105,7 +105,7 @@ export const DenomTrace = {
             message.index = object.index;
         }
         else {
-            message.index = '';
+            message.index = 0;
         }
         if (object.port !== undefined && object.port !== null) {
             message.port = object.port;

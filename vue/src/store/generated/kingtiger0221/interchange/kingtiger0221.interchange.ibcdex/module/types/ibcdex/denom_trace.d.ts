@@ -2,7 +2,7 @@ import { Writer, Reader } from 'protobufjs/minimal';
 export declare const protobufPackage = "kingtiger0221.interchange.ibcdex";
 export interface DenomTrace {
     creator: string;
-    index: string;
+    index: number;
     port: string;
     channel: string;
     origin: string;

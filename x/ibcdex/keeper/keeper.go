@@ -1,3 +1,4 @@
+
 package keeper
 
 import (
@@ -29,7 +30,7 @@ func NewKeeper(
 	channelKeeper types.ChannelKeeper,
 	portKeeper types.PortKeeper,
 	scopedKeeper types.ScopedKeeper,
-
+	bankKeeper types.BankKeeper,
 ) *Keeper {
 	return &Keeper{
 		cdc:           cdc,
@@ -38,6 +39,7 @@ func NewKeeper(
 		channelKeeper: channelKeeper,
 		portKeeper:    portKeeper,
 		scopedKeeper:  scopedKeeper,
+		bankKeeper:    bankKeeper,
 	}
 }
 

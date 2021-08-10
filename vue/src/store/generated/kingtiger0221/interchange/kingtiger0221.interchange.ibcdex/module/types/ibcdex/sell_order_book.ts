@@ -1,30 +1,35 @@
 /* eslint-disable */
+import { OrderBook } from '../ibcdex/order'
 import { Writer, Reader } from 'protobufjs/minimal'
 
 export const protobufPackage = 'kingtiger0221.interchange.ibcdex'
 
 export interface SellOrderBook {
   creator: string
-  index: string
+  index: number
   amountDenom: string
   priceDenom: string
+  book: OrderBook | undefined
 }
 
-const baseSellOrderBook: object = { creator: '', index: '', amountDenom: '', priceDenom: '' }
+const baseSellOrderBook: object = { creator: '', index: 0, amountDenom: '', priceDenom: '' }
 
 export const SellOrderBook = {
   encode(message: SellOrderBook, writer: Writer = Writer.create()): Writer {
     if (message.creator !== '') {
       writer.uint32(10).string(message.creator)
     }
-    if (message.index !== '') {
-      writer.uint32(18).string(message.index)
+    if (message.index !== 0) {
+      writer.uint32(16).int32(message.index)
     }
     if (message.amountDenom !== '') {
       writer.uint32(26).string(message.amountDenom)
     }
     if (message.priceDenom !== '') {
       writer.uint32(34).string(message.priceDenom)
+    }
+    if (message.book !== undefined) {
+      OrderBook.encode(message.book, writer.uint32(42).fork()).ldelim()
     }
     return writer
   },
@@ -40,13 +45,16 @@ export const SellOrderBook = {
           message.creator = reader.string()
           break
         case 2:
-          message.index = reader.string()
+          message.index = reader.int32()
           break
         case 3:
           message.amountDenom = reader.string()
           break
         case 4:
           message.priceDenom = reader.string()
+          break
+        case 5:
+          message.book = OrderBook.decode(reader, reader.uint32())
           break
         default:
           reader.skipType(tag & 7)
@@ -64,9 +72,9 @@ export const SellOrderBook = {
       message.creator = ''
     }
     if (object.index !== undefined && object.index !== null) {
-      message.index = String(object.index)
+      message.index = Number(object.index)
     } else {
-      message.index = ''
+      message.index = 0
     }
     if (object.amountDenom !== undefined && object.amountDenom !== null) {
       message.amountDenom = String(object.amountDenom)
@@ -78,6 +86,11 @@ export const SellOrderBook = {
     } else {
       message.priceDenom = ''
     }
+    if (object.book !== undefined && object.book !== null) {
+      message.book = OrderBook.fromJSON(object.book)
+    } else {
+      message.book = undefined
+    }
     return message
   },
 
@@ -87,6 +100,7 @@ export const SellOrderBook = {
     message.index !== undefined && (obj.index = message.index)
     message.amountDenom !== undefined && (obj.amountDenom = message.amountDenom)
     message.priceDenom !== undefined && (obj.priceDenom = message.priceDenom)
+    message.book !== undefined && (obj.book = message.book ? OrderBook.toJSON(message.book) : undefined)
     return obj
   },
 
@@ -100,7 +114,7 @@ export const SellOrderBook = {
     if (object.index !== undefined && object.index !== null) {
       message.index = object.index
     } else {
-      message.index = ''
+      message.index = 0
     }
     if (object.amountDenom !== undefined && object.amountDenom !== null) {
       message.amountDenom = object.amountDenom
@@ -111,6 +125,11 @@ export const SellOrderBook = {
       message.priceDenom = object.priceDenom
     } else {
       message.priceDenom = ''
+    }
+    if (object.book !== undefined && object.book !== null) {
+      message.book = OrderBook.fromPartial(object.book)
+    } else {
+      message.book = undefined
     }
     return message
   }

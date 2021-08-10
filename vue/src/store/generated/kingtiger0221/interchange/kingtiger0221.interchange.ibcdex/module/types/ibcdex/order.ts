@@ -3,28 +3,112 @@ import { Writer, Reader } from 'protobufjs/minimal'
 
 export const protobufPackage = 'kingtiger0221.interchange.ibcdex'
 
-export interface Order {
-  creator: string
-  index: string
-  amount: string
-  price: string
+export interface OrderBook {
+  idCount: number
+  orders: Order[]
 }
 
-const baseOrder: object = { creator: '', index: '', amount: '', price: '' }
+export interface Order {
+  creator: string
+  index: number
+  amount: number
+  price: number
+}
+
+const baseOrderBook: object = { idCount: 0 }
+
+export const OrderBook = {
+  encode(message: OrderBook, writer: Writer = Writer.create()): Writer {
+    if (message.idCount !== 0) {
+      writer.uint32(8).int32(message.idCount)
+    }
+    for (const v of message.orders) {
+      Order.encode(v!, writer.uint32(18).fork()).ldelim()
+    }
+    return writer
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): OrderBook {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = { ...baseOrderBook } as OrderBook
+    message.orders = []
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.idCount = reader.int32()
+          break
+        case 2:
+          message.orders.push(Order.decode(reader, reader.uint32()))
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): OrderBook {
+    const message = { ...baseOrderBook } as OrderBook
+    message.orders = []
+    if (object.idCount !== undefined && object.idCount !== null) {
+      message.idCount = Number(object.idCount)
+    } else {
+      message.idCount = 0
+    }
+    if (object.orders !== undefined && object.orders !== null) {
+      for (const e of object.orders) {
+        message.orders.push(Order.fromJSON(e))
+      }
+    }
+    return message
+  },
+
+  toJSON(message: OrderBook): unknown {
+    const obj: any = {}
+    message.idCount !== undefined && (obj.idCount = message.idCount)
+    if (message.orders) {
+      obj.orders = message.orders.map((e) => (e ? Order.toJSON(e) : undefined))
+    } else {
+      obj.orders = []
+    }
+    return obj
+  },
+
+  fromPartial(object: DeepPartial<OrderBook>): OrderBook {
+    const message = { ...baseOrderBook } as OrderBook
+    message.orders = []
+    if (object.idCount !== undefined && object.idCount !== null) {
+      message.idCount = object.idCount
+    } else {
+      message.idCount = 0
+    }
+    if (object.orders !== undefined && object.orders !== null) {
+      for (const e of object.orders) {
+        message.orders.push(Order.fromPartial(e))
+      }
+    }
+    return message
+  }
+}
+
+const baseOrder: object = { creator: '', index: 0, amount: 0, price: 0 }
 
 export const Order = {
   encode(message: Order, writer: Writer = Writer.create()): Writer {
     if (message.creator !== '') {
       writer.uint32(10).string(message.creator)
     }
-    if (message.index !== '') {
-      writer.uint32(18).string(message.index)
+    if (message.index !== 0) {
+      writer.uint32(16).int32(message.index)
     }
-    if (message.amount !== '') {
-      writer.uint32(26).string(message.amount)
+    if (message.amount !== 0) {
+      writer.uint32(24).int32(message.amount)
     }
-    if (message.price !== '') {
-      writer.uint32(34).string(message.price)
+    if (message.price !== 0) {
+      writer.uint32(32).int32(message.price)
     }
     return writer
   },
@@ -40,13 +124,13 @@ export const Order = {
           message.creator = reader.string()
           break
         case 2:
-          message.index = reader.string()
+          message.index = reader.int32()
           break
         case 3:
-          message.amount = reader.string()
+          message.amount = reader.int32()
           break
         case 4:
-          message.price = reader.string()
+          message.price = reader.int32()
           break
         default:
           reader.skipType(tag & 7)
@@ -64,19 +148,19 @@ export const Order = {
       message.creator = ''
     }
     if (object.index !== undefined && object.index !== null) {
-      message.index = String(object.index)
+      message.index = Number(object.index)
     } else {
-      message.index = ''
+      message.index = 0
     }
     if (object.amount !== undefined && object.amount !== null) {
-      message.amount = String(object.amount)
+      message.amount = Number(object.amount)
     } else {
-      message.amount = ''
+      message.amount = 0
     }
     if (object.price !== undefined && object.price !== null) {
-      message.price = String(object.price)
+      message.price = Number(object.price)
     } else {
-      message.price = ''
+      message.price = 0
     }
     return message
   },
@@ -100,17 +184,17 @@ export const Order = {
     if (object.index !== undefined && object.index !== null) {
       message.index = object.index
     } else {
-      message.index = ''
+      message.index = 0
     }
     if (object.amount !== undefined && object.amount !== null) {
       message.amount = object.amount
     } else {
-      message.amount = ''
+      message.amount = 0
     }
     if (object.price !== undefined && object.price !== null) {
       message.price = object.price
     } else {
-      message.price = ''
+      message.price = 0
     }
     return message
   }

@@ -30,7 +30,7 @@ func (gs GenesisState) Validate() error {
 
 	// this line is used by starport scaffolding # genesis/types/validate
 	// Check for duplicated index in order
-	orderIndexMap := make(map[string]bool)
+	orderIndexMap := make(map[int32]bool)
 
 	for _, elem := range gs.OrderList {
 		if _, ok := orderIndexMap[elem.Index]; ok {
@@ -48,7 +48,7 @@ func (gs GenesisState) Validate() error {
 		popIdMap[elem.Id] = true
 	}
 	// Check for duplicated index in denomTrace
-	denomTraceIndexMap := make(map[string]bool)
+	denomTraceIndexMap := make(map[int32]bool)
 
 	for _, elem := range gs.DenomTraceList {
 		if _, ok := denomTraceIndexMap[elem.Index]; ok {
@@ -57,7 +57,7 @@ func (gs GenesisState) Validate() error {
 		denomTraceIndexMap[elem.Index] = true
 	}
 	// Check for duplicated index in sellOrderBook
-	sellOrderBookIndexMap := make(map[string]bool)
+	sellOrderBookIndexMap := make(map[int32]bool)
 
 	for _, elem := range gs.SellOrderBookList {
 		if _, ok := sellOrderBookIndexMap[elem.Index]; ok {

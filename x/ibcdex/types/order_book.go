@@ -67,7 +67,7 @@ func (book OrderBook) GetNextOrderID() int32 {
 // GetOrderFromID gets an order from the book from its id
 func (book OrderBook) GetOrderFromID(id int32) (Order, error) {
 	for _, order := range book.Orders {
-		if order.Id == id {
+		if order.Index == int32(id) {
 			return *order, nil
 		}
 	}
@@ -94,7 +94,7 @@ func (book *OrderBook) IncrementNextOrderID() {
 // RemoveOrderFromID removes an order from the book and keep it ordered
 func (book *OrderBook) RemoveOrderFromID(id int32) error {
 	for i, order := range book.Orders {
-		if order.Id == id {
+		if order.Index == id {
 			book.Orders = append(book.Orders[:i], book.Orders[i+1:]...)
 			return nil
 		}
@@ -110,7 +110,7 @@ func (book *OrderBook) appendOrder(creator string, amount int32, price int32, or
 
 	// Initialize the order
 	var order Order
-	order.Id = book.GetNextOrderID()
+	order.Index = book.GetNextOrderID()
 	order.Creator = creator
 	order.Amount = amount
 	order.Price = price
@@ -121,7 +121,7 @@ func (book *OrderBook) appendOrder(creator string, amount int32, price int32, or
 	// Insert the order
 	book.insertOrder(order, ordering)
 
-	return order.Id, nil
+	return order.Index, nil
 }
 
 // insertOrder inserts the order in the book with the provided order
